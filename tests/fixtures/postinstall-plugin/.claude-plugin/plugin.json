@@ -1,0 +1,5 @@
+{
+  "name": "postinstall-plugin",
+  "version": "1.0.0",
+  "description": "Fixture: clean plugin with a package lifecycle script"
+}

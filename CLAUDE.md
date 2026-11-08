@@ -40,3 +40,9 @@ All logic lives in Python scripts with tests. Workflow YAML only wires steps tog
 - **`lint.yml` runs on every PR, not only workflow changes.** A required check with a path filter never reports on PRs outside that path, which blocks merging.
 - **`actionlint` runs from a Docker image pinned by digest.** Its PyPI package is source-only and downloads a binary at build time. Dependabot does not update this pin, so bump the tag and digest together.
 - **PRs opened with `GITHUB_TOKEN` do create workflow runs,** but they wait until someone with write access selects "Approve workflows to run".
+- **`inventory.py` runs its own injection check on `commands/` and `agents/`.** `skill-scanner` 2.3.2 does not read those files, so the check reuses its HIGH prompt injection signatures. Re-copy them when the scanner is upgraded.
+- **A repo with no `SKILL.md` is REVIEW, not "scanner error".** The scanner exits 1 with no JSON when it finds no skills. Without this, a commands-only plugin would be an unoverridable FAIL.
+- **`inventory.py` covers more than the handoff lists:** LSP servers, monitors, `bin/`, workflows, mods, frontmatter hooks, `` !`cmd` `` shell injection, command-running settings, forced output styles, plugin dependencies, and npm dependencies (Claude Code installs those automatically). All force REVIEW.
+- **Paths are matched case-insensitively,** because macOS installs on a case-insensitive filesystem.
+- **Symlinks that stay inside the repo force REVIEW.** The handoff only covers ones that escape, but an internal link can hide a config from the inventory.
+- **Snyk scores map to severity by its printer's bands:** 300-599 is REVIEW, 600 and above is FAIL. The bands are unnamed in its source, so this mapping is our interpretation.
