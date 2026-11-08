@@ -1,0 +1,7 @@
+{
+  "name": "postinstall-plugin",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "echo installed"
+  }
+}
